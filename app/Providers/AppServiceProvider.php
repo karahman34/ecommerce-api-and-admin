@@ -23,6 +23,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->disableFortifyViewsOnApiRequest();
+    }
+
+    private function disableFortifyViewsOnApiRequest()
+    {
+        if (request()->segment(1) === 'api') {
+            config(['fortify.views' => false]);
+        }
     }
 }

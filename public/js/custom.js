@@ -19,8 +19,6 @@ function showValidationErrors(errorFields, $form) {
   const errorFieldsName = Object.keys(errorFields)
   const $fields = $form.find('.form-group input, .form-group select, .form-group textarea')
 
-  console.log($fields)
-
   $fields.each(function (i) {
     const $field = $(this)
     const name = $field.attr('id')

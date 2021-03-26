@@ -16,9 +16,6 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->foreignId('product_id')->nullable()->constrained('products')->onDelete('set null');
-            $table->unsignedInteger('qty');
-            $table->string('message');
             $table->timestamps();
         });
     }

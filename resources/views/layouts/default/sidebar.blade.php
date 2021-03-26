@@ -32,6 +32,12 @@
       <li @if (request()->is('categories.index')) class="active" @endif><a class="nav-link" href="{{ route('categories.index') }}"><i class="fas fa-tags"></i>
           <span>Categories</span></a>
       </li>
+
+      {{-- Transactions --}}
+      <li @if (request()->is('transactions.index')) class="active" @endif><a class="nav-link" href="{{ route('transactions.index') }}"><i
+            class="fas fa-clipboard-list"></i>
+          <span>Transactions</span></a>
+      </li>
     </ul>
   </aside>
 </div>

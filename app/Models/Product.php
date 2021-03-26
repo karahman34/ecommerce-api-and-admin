@@ -60,4 +60,14 @@ class Product extends Model
     {
         return $this->hasOne(ProductImage::class);
     }
+
+    /**
+     * Get buyers that have buy this product.
+     *
+     * @return  HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

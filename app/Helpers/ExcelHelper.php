@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 class ExcelHelper
 {
     /**
+     * Allowed export formats.
+     *
+     * @var array
+     */
+    public static $allowed_export_formats =  ['xlsx', 'csv'];
+    
+    /**
      * Format export name.
      *
      * @param   string  $title

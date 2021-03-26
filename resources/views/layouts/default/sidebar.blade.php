@@ -27,6 +27,11 @@
       <li @if (request()->is('products.index')) class="active" @endif><a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-box"></i>
           <span>Products</span></a>
       </li>
+
+      {{-- Categories --}}
+      <li @if (request()->is('categories.index')) class="active" @endif><a class="nav-link" href="{{ route('categories.index') }}"><i class="fas fa-tags"></i>
+          <span>Categories</span></a>
+      </li>
     </ul>
   </aside>
 </div>

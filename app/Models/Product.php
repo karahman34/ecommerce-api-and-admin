@@ -62,12 +62,14 @@ class Product extends Model
     }
 
     /**
-     * Get buyers that have buy this product.
+     * Get orders.
      *
      * @return  HasMany
      */
-    public function orders()
+    public function detail_orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->belongsToMany(DetailOrder::class, 'detail_orders')
+                    ->withTimestamps()
+                    ->withPivot('qty', 'message');
     }
 }

@@ -320,6 +320,7 @@ class ProductController extends Controller
         if ($importRequest->showView()) {
             return view('components.import-modal', [
                 'action' => route('products.import'),
+                'datatable' => '#dt-products',
             ]);
         }
 

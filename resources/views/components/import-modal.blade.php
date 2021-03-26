@@ -9,7 +9,7 @@
       </div>
       <div class="modal-body">
         <form action="{{ $action }}" method="POST" class="need-ajax has-modal has-datatable"
-          enctype="multipart/form-data" data-datatable="#data-table">
+          enctype="multipart/form-data" data-datatable="#dt-products">
           @csrf
 
           <div class="form-group mb-4">

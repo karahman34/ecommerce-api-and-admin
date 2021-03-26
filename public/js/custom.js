@@ -179,6 +179,23 @@ $(document).on('submit', 'form.need-ajax', function (e) {
     options['cache'] = false
     options['contentType'] = false
     options['processData'] = false
+
+    // Setup input type files.
+    $form.find('input[type=file]').each(function (i) {
+      const $inputFile = $(this)
+      const inputName = $inputFile.attr('name')
+      const files = $inputFile[0].files
+      const multiple = $inputFile.attr('multiple')
+
+      // Delete the existing input from data.
+      data.delete(inputName)
+
+      // Append the file object.
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        data.append(multiple ? `${inputName}[${i}]` : inputName, file)
+      }
+    })
   }
 
   // Remove current validations.

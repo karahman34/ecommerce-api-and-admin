@@ -6,10 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
     use HasFactory;
+
+    /**
+     * Upload folder name.
+     *
+     * @var string
+     */
+    public static $uploadFolder = 'products';
 
     /**
      * The attributes that are mass assignable.
@@ -41,5 +49,15 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Get the product's thumbnal.
+     *
+     * @return  HasOne
+     */
+    public function thumbnail()
+    {
+        return $this->hasOne(ProductImage::class);
     }
 }

@@ -296,12 +296,10 @@ class ProductController extends Controller
      */
     public function export(ExportRequest $exportRequest)
     {
-        $formats = ['xlsx', 'csv'];
-
         if ($exportRequest->showView()) {
             return view('components.export-modal', [
                 'action' => route('products.export'),
-                'formats' => $formats,
+                'formats' => ExcelHelper::$allowed_export_formats,
             ]);
         }
 
@@ -321,7 +319,7 @@ class ProductController extends Controller
     {
         if ($importRequest->showView()) {
             return view('components.import-modal', [
-                'action' => route('products.import')
+                'action' => route('products.import'),
             ]);
         }
 

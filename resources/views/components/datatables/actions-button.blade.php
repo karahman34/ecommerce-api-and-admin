@@ -1,3 +1,8 @@
+@isset($show_url)
+  <a href="{{ $show_url }}" class="btn btn-primary btn-modal-trigger" data-modal="{{ $show_modal }}"><i
+      class="fas fa-eye"></i></a>
+@endisset
+
 @isset($edit_url)
   <a href="{{ $edit_url }}" class="btn btn-warning btn-modal-trigger" data-modal="{{ $modal }}"><i
       class="fas fa-edit"></i></a>

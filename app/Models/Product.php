@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\MoneyHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -71,5 +72,15 @@ class Product extends Model
         return $this->belongsToMany(DetailOrder::class, 'detail_orders')
                     ->withTimestamps()
                     ->withPivot('qty', 'message');
+    }
+
+    /**
+     * Convert price to rupiah.
+     *
+     * @return  string
+     */
+    public function priceInRupiah()
+    {
+        return MoneyHelper::convertToRupiah($this->price);
     }
 }

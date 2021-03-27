@@ -33,6 +33,11 @@
           <span>Categories</span></a>
       </li>
 
+      {{-- Orders --}}
+      <li @if (request()->is('orders.index')) class="active" @endif><a class="nav-link" href="{{ route('orders.index') }}"><i class="fas fa-shopping-cart"></i>
+          <span>Orders</span></a>
+      </li>
+
       {{-- Transactions --}}
       <li @if (request()->is('transactions.index')) class="active" @endif><a class="nav-link" href="{{ route('transactions.index') }}"><i
             class="fas fa-clipboard-list"></i>

@@ -57,6 +57,10 @@ function ButtonSpinner($btn) {
   }
 }
 
+function reloadDataTable(selector, resetPaging = true) {
+  $(selector).DataTable().ajax.reload(null, resetPaging)
+}
+
 // Logout
 const logoutButtons = document.querySelectorAll('.logout-btn')
 const logoutForm = document.querySelector('#logout-form')

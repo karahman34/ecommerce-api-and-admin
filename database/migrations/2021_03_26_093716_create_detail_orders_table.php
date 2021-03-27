@@ -15,7 +15,7 @@ class CreateDetailOrdersTable extends Migration
     {
         Schema::create('detail_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->nullable()->constrained('orders')->onDelete('set null');
+            $table->foreignId('order_id')->constrained('orders');
             $table->foreignId('product_id')->nullable()->constrained('products')->onDelete('set null');
             $table->unsignedInteger('qty');
             $table->string('message');

@@ -1,5 +1,5 @@
 <div id="product-image-edit-modal" class="modal fade" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered shadow-lg" role="document">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Edit Image</h5>

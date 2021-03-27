@@ -82,7 +82,7 @@ $modalTitle = $action === 'create' ? 'Create Product' : 'Edit ' . $product->name
           {{-- Image Input --}}
           <div class="form-group">
             <label for="images">Images</label>
-            <input multiple type="file" name="images" id="images" accept="image/*" class="form-control-file" required>
+            <input multiple type="file" name="images" id="images" accept="image/*" class="form-control-file" @if ($action === 'create') required @endif>
           </div>
 
           {{-- Actions --}}

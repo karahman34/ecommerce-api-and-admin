@@ -100,7 +100,7 @@ $(document).on('click', '.delete-prompt-trigger', function (e) {
           })
 
           if ($btn.hasClass('has-datatable')) {
-            $($btn.data('datatable')).DataTable().ajax.reload(null, false)
+            reloadDataTable($btn.data('datatable'), false)
           }
         })
         .fail(() => Swal.fire({
@@ -224,7 +224,7 @@ $(document).on('submit', 'form.need-ajax', function (e) {
         const stayPaging = $form.data('stay-paging')
 
         stayPaging == '1'
-          ? $dataTable.DataTable().ajax.reload(null, false)
+          ? reloadDataTable($form.data('datatable'), false)
           : $dataTable.DataTable().order([0, 'desc']).draw()
       }
 

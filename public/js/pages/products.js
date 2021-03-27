@@ -110,14 +110,17 @@ $(document).on('click', `${formModalSelector} .preview-image .actions > a[delete
 
       $.post(url, { _token: CSRF_TOKEN, _method: 'DELETE' })
         .done(() => {
+          // Delete image from modal.
+          $btn.closest('.preview-image').remove()
+
+          // Refresh datatable.
+          reloadDataTable(dataTableSelector, false)
+
           Swal.fire({
             icon: 'success',
             title: 'Complete!',
             text: `Image has been deleted.`,
           })
-
-          // Delete image from modal.
-          $btn.closest('.preview-image').remove()
         })
         .fail(err => Swal.fire({
           icon: 'error',
@@ -139,6 +142,6 @@ $(document).on('form-ajax.success', function (e, res, formSelector) {
     $modal.find(`img[src="${$ownForm.data('current-image-path')}"]`).attr('src', res.data.url)
 
     // Refresh datatable.
-    $(dataTableSelector).DataTable().ajax.reload(null, false)
+    reloadDataTable(dataTableSelector, false)
   }
 })

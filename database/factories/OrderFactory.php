@@ -22,7 +22,9 @@ class OrderFactory extends Factory
      */
     public function definition()
     {
-        return [];
+        return [
+            'status' => rand(0, 1) === 1 ? 'finish' : 'pending',
+        ];
     }
 
     /**

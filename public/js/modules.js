@@ -1,3 +1,10 @@
+// Listen order details modal event.
+$(document).on('api-modal.loaded', function (e, modalSelector) {
+  if (modalSelector === '#detail-order-modal') {
+    $('#dt-order-details-products').DataTable()
+  }
+})
+
 // Listen finish order button.
 $(document).on('click', '.btn-order-finish', function () {
   const $btn = $(this)

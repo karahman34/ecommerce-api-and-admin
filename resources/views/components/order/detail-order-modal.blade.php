@@ -65,7 +65,7 @@
             </div>
 
             @if ($order->status !== 'finish')
-              <button type="button" class="btn btn-success btn-lg btn-order-finish font-weight-bolder mt-1"
+              <button type="button" class="btn btn-success btn-lg btn-order-finish font-weight-bolder my-1"
                 data-url="{{ route('orders.finish', ['order' => $order->id]) }}" style="font-size: 20px;">
                 <i class="fas fa-check"></i>
                 <span class="ml-1">Finish</span>
@@ -75,7 +75,7 @@
         </div>
 
         {{-- Products Table --}}
-        <table id="dt-detail-products" class="table has-actions">
+        <table id="dt-order-details-products" class="table has-actions">
           <thead>
             <tr>
               <th>Id</th>

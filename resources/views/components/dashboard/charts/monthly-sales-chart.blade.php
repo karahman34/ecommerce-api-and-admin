@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header">
-    <h4><i class="fas fa-chart mr-1"></i> Monthly Sales</h4>
+    <h4><i class="fas fa-chart-bar mr-1"></i> Monthly Sales</h4>
   </div>
   <div class="card-body pt-0">
     <canvas id="monthly-sales-chart" height="150"></canvas>

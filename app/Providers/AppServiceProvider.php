@@ -23,13 +23,32 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->disableFortifyViewsOnApiRequest();
+        $this->setFortifyForApi();
     }
 
-    private function disableFortifyViewsOnApiRequest()
+    /**
+     * Change some fortify configs on api request.
+     *
+     * @return  void
+     */
+    private function setFortifyForApi()
     {
-        if (request()->segment(1) === 'api') {
+        $fortifyPath = [
+            'login',
+            'logout',
+            'register',
+            'email/verification-notification',
+            'forgot-password',
+            'reset-password',
+            'user/password',
+            'user/confirm-password',
+            'user/profile-information',
+        ];
+
+        if (request()->wantsJson() && in_array(request()->path(), $fortifyPath)) {
             config(['fortify.views' => false]);
+            config(['fortify.guard' => 'api']);
+            config(['fortify.middleware' => ['api']]);
         }
     }
 }

@@ -15,7 +15,19 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => [
+        'api/*',
+        'sanctum/csrf-cookie',
+        'login',
+        'logout',
+        'register',
+        'email/verification-notification',
+        'forgot-password',
+        'reset-password',
+        'user/password',
+        'user/confirm-password',
+        'user/profile-information',
+    ],
 
     'allowed_methods' => ['*'],
 
@@ -29,6 +41,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];

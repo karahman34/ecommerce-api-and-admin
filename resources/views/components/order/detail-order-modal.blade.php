@@ -45,6 +45,11 @@
           {{-- Right --}}
           <div class="col-12 col-md-6 d-flex flex-column align-items-end">
             <div>
+              <span class="font-weight-bold">Order Id: </span>
+              <span>{{ $order->id }}</span>
+            </div>
+
+            <div>
               <span class="font-weight-bold">Total Items: </span>
               <span>{{ $details->count() }}</span>
             </div>
@@ -52,6 +57,11 @@
             <div>
               <span class="font-weight-bold">Sub Total: </span>
               <span>{{ $transaction->totalInRupiah() }}</span>
+            </div>
+
+            <div>
+              <span class="font-weight-bold">Created At: </span>
+              <span>{{ $order->created_at->toDateTimeString() }}</span>
             </div>
 
             @if ($order->status !== 'finish')

@@ -41,34 +41,5 @@ $(document).on('api-modal.loaded', function (e, modalSelector) {
   }
 })
 
-// Listen finish order button.
-$(document).on('click', '.btn-order-finish', function () {
-  const $btn = $(this)
-  const $btnSpinner = new ButtonSpinner($btn)
-  const url = $btn.data('url')
-
-  $btnSpinner.show()
-  
-  $.post(url, {
-    _method: 'PATCH',
-    _token: CSRF_TOKEN,
-  })
-  .done(function () {
-    $btn.remove()
-    
-    const $modal = $(orderDetailsModalSelector)
-    const $alertStatus = $modal.find('.alert-order-status')
-
-    $alertStatus.removeClass('alert-warning')
-    $alertStatus.addClass('alert-success')
-    $alertStatus.html('finish')
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Success!',
-      text: 'Order status changed.',
-    })
-
-    reloadDataTable(dataTableSelector, false)
-  })
-})
+// Listen on finish order event.
+$(document).on('order.finish', () => reloadDataTable(dataTableSelector, false))

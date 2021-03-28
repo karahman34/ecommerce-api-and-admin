@@ -31,6 +31,8 @@
             <th>Name</th>
             <th>Price</th>
             <th>Stock</th>
+            <th>Created At</th>
+            <th>Updated At</th>
             <th>Actions</th>
           </tr>
         </thead>

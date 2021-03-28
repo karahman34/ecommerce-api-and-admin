@@ -20,6 +20,7 @@
             <th>Id</th>
             <th>Order Id</th>
             <th>Total</th>
+            <th>Created At</th>
             <th>Actions</th>
           </tr>
         </thead>

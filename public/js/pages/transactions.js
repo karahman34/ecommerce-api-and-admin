@@ -15,6 +15,10 @@ $(dataTableSelector).DataTable({
       data: 'total'
     },
     {
+      data: 'created_at',
+      render: data => moment(data).format('L - LT')
+    },
+    {
       data: 'actions',
       searchable: false,
       orderable: false,

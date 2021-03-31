@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use App\Utils\Transformer;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -34,8 +37,12 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (ValidationException $e, Request $request) {
+            if ($request->wantsJson()) {
+                return Transformer::failed('The given data was invalid.', $e->errors(), 422);
+            }
+
+            return $e;
         });
     }
 }

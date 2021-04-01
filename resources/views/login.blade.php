@@ -9,12 +9,13 @@
         </div>
 
         <div class="card-body">
-          <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate="">
+          <form method="POST" action="{{ route('login_admin') }}" class="needs-validation" novalidate="">
             @csrf
 
             <div class="form-group">
               <label for="email">Email</label>
-              <input id="email" type="email" class="form-control" name="email" tabindex="1" placeholder="Email" required autofocus>
+              <input id="email" type="email" class="form-control" name="email" tabindex="1" placeholder="Email" required
+                autofocus>
               @error('email')
                 <div class="text-danger">
                   {{ $message }}
@@ -25,13 +26,9 @@
             <div class="form-group">
               <div class="d-block">
                 <label for="password" class="control-label">Password</label>
-                <div class="float-right">
-                  <a href="{{ route('password.request') }}" class="text-small">
-                    Forgot Password?
-                  </a>
-                </div>
               </div>
-              <input id="password" type="password" class="form-control" name="password" tabindex="2" placeholder="Password" required>
+              <input id="password" type="password" class="form-control" name="password" tabindex="2"
+                placeholder="Password" required>
               @error('password')
                 <div class="text-danger">
                   {{ $message }}

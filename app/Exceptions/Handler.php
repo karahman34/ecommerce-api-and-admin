@@ -41,8 +41,6 @@ class Handler extends ExceptionHandler
             if ($request->wantsJson()) {
                 return Transformer::failed('The given data was invalid.', $e->errors(), 422);
             }
-
-            return $e;
         });
     }
 }

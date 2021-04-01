@@ -15,7 +15,7 @@ class ClientController extends Controller
 
     public function __construct()
     {
-        $this->base_url = env('SPA_URL', 'http://localhost:3000/');
+        $this->base_url = config('app.spa_url');
     }
 
     /**

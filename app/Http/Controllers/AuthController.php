@@ -2,13 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    /**
+     * Check if the request coming from
+     * verify email.
+     *
+     * @return  bool
+     */
+    private function fromVerifyEmail()
+    {
+        $segments = explode('/', parse_url(url()->previous(), PHP_URL_PATH));
+        
+        if (count($segments) === 5 && $segments[1] === 'email' && $segments[2] === 'verify') {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Show the login page.
      *
@@ -16,6 +31,12 @@ class AuthController extends Controller
      */
     public function loginView()
     {
+        if ($this->fromVerifyEmail()) {
+            $loginRoute = config('app.spa_url') . '/login';
+
+            return redirect()->to($loginRoute . '?origin=' . urlencode(url()->previous()));
+        }
+
         return view('login', [
             'title' => 'Login'
         ]);

@@ -4,7 +4,7 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('products')->name('products.')->group(function () {
-    Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth:admin'])->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('index');
         Route::get('/export', [ProductController::class, 'export'])->name('export');
         Route::get('/create', [ProductController::class, 'create'])->name('create');

@@ -4,7 +4,7 @@ use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('orders')->name('orders.')->group(function () {
-    Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth:admin'])->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
         Route::get('/export', [OrderController::class, 'export'])->name('export');
         Route::get('/{order}', [OrderController::class, 'show'])->name('show');

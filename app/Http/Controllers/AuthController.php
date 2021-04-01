@@ -16,7 +16,7 @@ class AuthController extends Controller
     public function getMe()
     {
         try {
-            $user = Auth::guard('api')->user();
+            $user = Auth::guard('sanctum')->user();
 
             return Transformer::success('Success to get user data.', new UserResource($user));
         } catch (\Throwable $th) {

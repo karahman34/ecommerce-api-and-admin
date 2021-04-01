@@ -80,17 +80,10 @@ $(document).on('api-modal.loaded', function (e, selector) {
 // Listen image input change.
 $(document).on('change', `${formModalSelector} input#images`, function (e) {
   const images = e.target.files
-  let $previewImage = $('.preview-image')
+  const $previewImage = $('.preview-image')
 
-  if (!$previewImage.length) {
-    const $parentInput = $(this).parent()
-    $('<div class="row preview-image"></div>').insertBefore($parentInput)
-  
-    $previewImage = $('.preview-image')
-  }
-  
   // Remove previous preview images.
-  $(formModalSelector).find('.preview-image-item[from-input]').remove()
+  $previewImage.find('.preview-image-item[from-input]').remove()
 
   // Add preview images.
   for (let i = 0; i < images.length; i++) {

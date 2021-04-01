@@ -76,6 +76,7 @@ class ProductController extends Controller
                 'name',
                 'stock',
                 'price',
+                'description',
             ]);
 
             $product = Product::create($payload);
@@ -131,6 +132,7 @@ class ProductController extends Controller
                 'name',
                 'stock',
                 'price',
+                'description',
             ]);
 
             $this->insertProductImages($productRequest, $product);

@@ -66,46 +66,59 @@ $modalTitle = $action === 'create' ? 'Create Product' : 'Edit ' . $product->name
             </div>
           </div>
 
-          {{-- Preview Images --}}
-          @if (isset($product))
-            <div class="row preview-image">
-              @foreach ($product->images as $productImage)
-                <div class="col-12 col-md-3 preview-image-item">
-                  {{-- Image --}}
-                  <img src="{{ $productImage->fullPathUrl() }}" alt="{{ $productImage->path }}"
-                    class="img-fluid d-block">
-
-                  {{-- Actions --}}
-                  <div class="d-flex actions my-1">
-                    {{-- Edit --}}
-                    <a href="{{ route('products.edit_product_image', ['product' => $product->id, 'productImage' => $productImage->id]) }}"
-                      class="mr-2 btn-modal-trigger" data-modal="#product-image-edit-modal">
-                      <i class="fas fa-edit mr-1"></i>
-                      Edit
-                    </a>
-
-                    {{-- Delete --}}
-                    <a href="{{ route('products.destroy_product_image', ['product' => $product->id, 'productImage' => $productImage->id]) }}"
-                      delete>
-                      <i class="fas fa-trash mr-1"></i>
-                      Delete
-                    </a>
-                  </div>
+          {{-- Description & Images --}}
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" class="form-control" rows="3" placeholder="Description"
+                  style="height:100%;" required>@isset($product){{ $product->description }}@endisset</textarea>
                 </div>
-              @endforeach
+              </div>
+
+              <div class="col-12 col-md-6">
+                {{-- Image Input --}}
+                <div class="form-group">
+                  <label for="images">Images</label>
+                  <input multiple type="file" name="images" id="images" accept="image/*" class="form-control-file" @if ($action === 'create') required @endif>
+                </div>
+              </div>
             </div>
-          @endif
 
-          {{-- Image Input --}}
-          <div class="form-group">
-            <label for="images">Images</label>
-            <input multiple type="file" name="images" id="images" accept="image/*" class="form-control-file" @if ($action === 'create') required @endif>
-          </div>
+            {{-- Preview Images --}}
+            <div class="row preview-image">
+              @if (isset($product))
+                @foreach ($product->images as $productImage)
+                  <div class="col-12 col-md-3 preview-image-item">
+                    {{-- Image --}}
+                    <img src="{{ $productImage->fullPathUrl() }}" alt="{{ $productImage->path }}"
+                      class="img-fluid d-block">
 
-          {{-- Actions --}}
-          @include('components.modal-actions', ['action' => $action])
-        </form>
+                    {{-- Actions --}}
+                    <div class="d-flex actions my-1">
+                      {{-- Edit --}}
+                      <a href="{{ route('products.edit_product_image', ['product' => $product->id, 'productImage' => $productImage->id]) }}"
+                        class="mr-2 btn-modal-trigger" data-modal="#product-image-edit-modal">
+                        <i class="fas fa-edit mr-1"></i>
+                        Edit
+                      </a>
+
+                      {{-- Delete --}}
+                      <a href="{{ route('products.destroy_product_image', ['product' => $product->id, 'productImage' => $productImage->id]) }}"
+                        delete>
+                        <i class="fas fa-trash mr-1"></i>
+                        Delete
+                      </a>
+                    </div>
+                  </div>
+                @endforeach
+              @endif
+            </div>
+
+            {{-- Actions --}}
+            @include('components.modal-actions', ['action' => $action])
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>

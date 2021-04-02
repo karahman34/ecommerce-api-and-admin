@@ -72,4 +72,16 @@ class ClientController extends Controller
     {
         return $this->away($request, $this->base_url);
     }
+
+    /**
+     * Redirect to client reset password page.
+     *
+     * @param   Request  $request
+     *
+     * @return  \Illuminate\Http\RedirectResponse
+     */
+    public function resetPassword(Request $request)
+    {
+        return $this->away($request, $this->base_url . '/reset-password');
+    }
 }

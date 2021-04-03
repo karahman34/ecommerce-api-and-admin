@@ -25,7 +25,8 @@ class ProductResource extends JsonResource
             'thumbnail' => $this->thumbnail->fullPathUrl(),
             'images' => $this->images->map(function (ProductImage $productImage) {
                 return $productImage->fullPathUrl();
-            })
+            }),
+            'category' => $this->category->name,
         ];
     }
 }

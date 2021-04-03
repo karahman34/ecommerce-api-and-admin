@@ -12,5 +12,6 @@
 */
 
 require "api/auth.php";
-require "api/products.php";
+require "api/carts.php";
 require "api/categories.php";
+require "api/products.php";

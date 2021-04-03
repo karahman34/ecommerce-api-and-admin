@@ -25,6 +25,21 @@ class ProductController extends Controller
                                     $query->where('name', 'like', '%' . $request->input('q') . '%');
                                 });
 
+            $filter = $request->input('filter');
+            if (!is_null($filter)) {
+                $allowedFilters = ['new'];
+                                    
+                if (!in_array($filter, $allowedFilters)) {
+                    return Transformer::failed('Filter not allowed.', null, 400);
+                }
+
+                switch ($filter) {
+                    case 'new':
+                        $query->orderByDesc('products.created_at');
+                        break;
+                }
+            }
+
             $products = $request->has('limit') ? $query->paginate($request->input('limit')) : $query->paginate();
 
             return (new ProductsCollection($products))

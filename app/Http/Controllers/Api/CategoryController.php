@@ -24,21 +24,19 @@ class CategoryController extends Controller
             $limit = $request->input('limit');
             $search = $request->input('search');
 
-            $popularProducts = DB::table('products')
-                                    ->select('products.category_id')
-                                    ->join('detail_orders', 'detail_orders.product_id', 'products.id')
-                                    ->groupBy('product_id')
-                                    ->orderByRaw('COUNT(product_id) DESC');
+            $products_category = DB::table('detail_orders')
+                                        ->select('products.category_id')
+                                        ->join('products', 'products.id', 'detail_orders.product_id');
 
             $query = Category::select('categories.*')
-                                    ->joinSub($popularProducts, 'popular_products', function ($join) {
-                                        $join->on('categories.id', '=', 'popular_products.category_id');
+                                    ->joinSub($products_category, 'products_category', function ($join) {
+                                        $join->on('categories.id', '=', 'products_category.category_id');
                                     })
                                     ->when(!is_null($search), function ($query) use ($search) {
-                                        $query->where('name', 'like', '%'. $search .'%');
+                                        $query->where('categories.name', 'like', '%'. $search .'%');
                                     })
-                                    ->groupBy('popular_products.category_id')
-                                    ->orderByRaw('COUNT(popular_products.category_id) DESC');
+                                    ->groupBy('products_category.category_id')
+                                    ->orderByRaw('COUNT(products_category.category_id) DESC');
 
             $categories = is_null($limit)
                             ? $query->paginate()

@@ -23,9 +23,13 @@ class CategoryController extends Controller
         try {
             $limit = $request->input('limit');
             $search = $request->input('search');
+            $random = $request->input('random');
 
             $query = Category::when(!is_null($search), function ($query) use ($search) {
                 $query->where('name', 'like', '%'. $search .'%');
+            })
+            ->when(!is_null($random) && $random == '1', function ($query) {
+                $query->inRandomOrder();
             });
 
             $categories = is_null($limit)

@@ -12,6 +12,36 @@ use Illuminate\Support\Facades\DB;
 class CategoryController extends Controller
 {
     /**
+     * Get categories data.
+     *
+     * @param   Request  $request
+     *
+     * @return  \Illuminate\Http\JsonResponse
+     */
+    public function index(Request $request)
+    {
+        try {
+            $limit = $request->input('limit');
+            $search = $request->input('search');
+
+            $query = Category::when(!is_null($search), function ($query) use ($search) {
+                $query->where('name', 'like', '%'. $search .'%');
+            });
+
+            $categories = is_null($limit)
+                            ? $query->paginate()
+                            : $query->paginate($limit);
+
+            return (new CategoriesCollection($categories))
+                    ->additional(
+                        Transformer::skeleton(true, 'Success to load categories data.', null, true)
+                    );
+        } catch (\Throwable $th) {
+            return Transformer::failed('Failed to load categories data.');
+        }
+    }
+    
+    /**
      * Get popular categories.
      *
      * @param   Request  $request

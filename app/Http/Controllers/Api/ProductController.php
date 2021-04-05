@@ -50,4 +50,66 @@ class ProductController extends Controller
             return Transformer::failed('Failed to load products data.');
         }
     }
+
+    /**
+     * Get popular products list.
+     *
+     * @param   Request  $request
+     *
+     * @return  \Illuminate\Http\JsonResponse
+     */
+    public function popular(Request $request)
+    {
+        try {
+            $limit = $request->input('limit');
+            $search = $request->input('search');
+
+            $query = Product::select('products.*')
+                                ->join('detail_orders', 'detail_orders.product_id', 'products.id')
+                                ->when(!is_null($search), function ($query) use ($search) {
+                                    $query->where('name', 'like', '%'. $search .'%');
+                                })
+                                ->groupBy('product_id')
+                                ->orderByRaw('COUNT(product_id) DESC');
+
+            $products = is_null($limit) ? $query->paginate() : $query->paginate($limit);
+
+            return (new ProductsCollection($products))
+                        ->additional(
+                            Transformer::skeleton(true, 'Success to load popular products.', null, true)
+                        );
+        } catch (\Throwable $th) {
+            return Transformer::failed('Failed to load popular products.');
+        }
+    }
+
+    /**
+     * Get random products list.
+     *
+     * @param   Request  $request
+     *
+     * @return  \Illuminate\Http\JsonResponse
+     */
+    public function random(Request $request)
+    {
+        try {
+            $limit = $request->input('limit');
+            $search = $request->input('search');
+
+            $query = Product::select('products.*')
+                                ->when(!is_null($search), function ($query) use ($search) {
+                                    $query->where('name', 'like', '%'. $search .'%');
+                                })
+                                ->inRandomOrder();
+
+            $products = is_null($limit) ? $query->paginate() : $query->paginate($limit);
+
+            return (new ProductsCollection($products))
+                        ->additional(
+                            Transformer::skeleton(true, 'Success to load random products.', null, true)
+                        );
+        } catch (\Throwable $th) {
+            return Transformer::failed('Failed to load random products.');
+        }
+    }
 }

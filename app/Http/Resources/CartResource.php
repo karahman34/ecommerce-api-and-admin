@@ -14,13 +14,14 @@ class CartResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        return
+        [
             'id' => $this->pivot->id,
             'qty' => $this->pivot->qty,
             'message' => $this->pivot->message,
-            'product' => new ProductResource($this),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'product' => new ProductResource($this),
         ];
     }
 }

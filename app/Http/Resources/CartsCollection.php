@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class CartsCollection extends ResourceCollection
@@ -15,8 +15,8 @@ class CartsCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->resource->map(function (Cart $cart) {
-            return new CartResource($cart);
+        return $this->resource->map(function (Product $product) {
+            return new CartResource($product);
         });
     }
 }

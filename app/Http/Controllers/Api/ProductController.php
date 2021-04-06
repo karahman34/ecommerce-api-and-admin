@@ -85,6 +85,7 @@ class ProductController extends Controller
 
             $relatedProducts = Product::with(['thumbnail', 'images'])
                                         ->where('category_id', $product->category_id)
+                                        ->where('name', '!=', $product->name)
                                         ->inRandomOrder()
                                         ->paginate($limit);
 

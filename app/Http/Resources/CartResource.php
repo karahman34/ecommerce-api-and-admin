@@ -19,8 +19,8 @@ class CartResource extends JsonResource
             'id' => $this->pivot->id,
             'qty' => $this->pivot->qty,
             'message' => $this->pivot->message,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_at' => $this->pivot->created_at,
+            'updated_at' => $this->pivot->updated_at,
             'product' => new ProductResource($this),
         ];
     }

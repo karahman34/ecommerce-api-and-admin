@@ -84,7 +84,8 @@ class ProductController extends Controller
             $limit = $request->input('limit', 8);
 
             $relatedProducts = Product::with(['thumbnail', 'images'])
-                                        ->whereIn('category_id', $product->category_id)
+                                        ->where('category_id', $product->category_id)
+                                        ->inRandomOrder()
                                         ->paginate($limit);
 
             return (new ProductsCollection($relatedProducts))

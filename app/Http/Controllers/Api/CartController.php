@@ -79,7 +79,9 @@ class CartController extends Controller
                 $cartRequest->only(['qty', 'message'])
             );
 
-            return Transformer::success('Success to update cart.', new CartResource($cart));
+            $newCart = Auth::user()->carts()->wherePivot('id', $cart->id)->first();
+
+            return Transformer::success('Success to update cart.', new CartResource($newCart));
         } catch (\Throwable $th) {
             return Transformer::failed('Failed to update cart.');
         }

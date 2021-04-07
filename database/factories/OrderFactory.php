@@ -45,14 +45,16 @@ class OrderFactory extends Factory
     {
         $productsId = Product::select('id')->limit(rand(1, 5))->inRandomOrder()->get()->pluck('id');
         
-        $productsId->each(function ($productId) use ($order) {
-            $order->detail_orders()->attach(
-                $productId,
-                [
+        $detailOrders = $productsId->reduce(function ($carry, $productId) {
+            $carry[$productId] = [
                 'qty' => rand(1, 5),
-                'message' => $this->getDetailOrderMessage()]
-            );
-        });
+                'message' => $this->getDetailOrderMessage()
+            ];
+            
+            return $carry;
+        }, []);
+
+        $order->detail_orders()->attach($detailOrders);
     }
 
     private function createTransaction(Order $order)

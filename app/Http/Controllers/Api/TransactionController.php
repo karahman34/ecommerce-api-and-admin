@@ -21,8 +21,12 @@ class TransactionController extends Controller
     {
         try {
             $user = Auth::user();
-            $cartItems  = $user->carts;
 
+            if (!$this->profileComplete($user)) {
+                return Transformer::failed('You must complete your profile first to continue.', null, 422);
+            }
+            
+            $cartItems = $user->carts;
             if ($cartItems->count() < 1) {
                 return Transformer::failed('You did not have any items inside your cart.', null, 400);
             }
@@ -32,6 +36,9 @@ class TransactionController extends Controller
 
             $order->transaction()->create([
                 'total' => $total,
+                'name' => $user->name,
+                'address' => $user->profile->address,
+                'telephone' => $user->profile->telephone,
             ]);
 
             $this->clearUserCart($user);
@@ -40,6 +47,24 @@ class TransactionController extends Controller
         } catch (\Throwable $th) {
             return Transformer::failed('Failed to make transaction.');
         }
+    }
+
+    /**
+     * Check weather the user profile is complete.
+     *
+     * @param   User  $user
+     *
+     * @return  bool
+     */
+    public function profileComplete(User $user)
+    {
+        $profile = $user->profile;
+
+        if (is_null($profile->telephone) || is_null($profile->address)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

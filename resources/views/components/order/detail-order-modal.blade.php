@@ -18,7 +18,7 @@
           <div class="col-12 col-md-6 d-flex flex-column">
             <div class="d-flex flex-wrap">
               <span class="font-weight-bold mr-1">Name:</span>
-              <span>{{ $buyer->name }}</span>
+              <span>{{ $transaction->name }}</span>
             </div>
 
             <div class="d-flex flex-wrap">
@@ -28,12 +28,12 @@
 
             <div class="d-flex flex-wrap">
               <span class="font-weight-bold mr-1">Telephone:</span>
-              <span>{{ $buyer->profile->telephone }}</span>
+              <span>{{ $transaction->telephone }}</span>
             </div>
 
             <div class="d-flex flex-wrap">
               <span class="font-weight-bold mr-1">Address:</span>
-              <span>{{ $buyer->profile->address }}</span>
+              <span>{{ $transaction->address }}</span>
             </div>
           </div>
 

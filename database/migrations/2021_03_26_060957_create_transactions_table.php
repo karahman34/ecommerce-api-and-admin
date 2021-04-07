@@ -17,6 +17,9 @@ class CreateTransactionsTable extends Migration
             $table->id();
             $table->foreignId('order_id')->nullable()->constrained('orders')->onDelete('set null');
             $table->unsignedInteger('total');
+            $table->string('name');
+            $table->text('address');
+            $table->string('telephone');
             $table->timestamps();
         });
     }

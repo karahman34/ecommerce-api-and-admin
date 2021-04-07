@@ -66,8 +66,12 @@ class OrderFactory extends Factory
             $total += $orderProduct->price * $orderProduct->pivot->qty;
         }
 
+        $user = $order->user;
         $order->transaction()->create([
             'total' => $total,
+            'name' => $user->name,
+            'address' => $user->profile->address,
+            'telephone' => $user->profile->telephone,
         ]);
     }
 

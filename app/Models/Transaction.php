@@ -19,6 +19,9 @@ class Transaction extends Model
     protected $fillable = [
         'order_id',
         'total',
+        'name',
+        'address',
+        'telephone',
     ];
 
     /**

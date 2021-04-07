@@ -17,7 +17,6 @@ class CreateProfilesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->string('telephone', 25)->nullable();
-            $table->string('postal_code')->nullable();
             $table->text('address')->nullable();
             $table->timestamps();
         });

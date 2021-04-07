@@ -22,7 +22,6 @@ class UserResource extends JsonResource
             'updated_at' => $this->updated_at,
             'profile' => [
                 'telephone' => $this->profile->telephone,
-                'postal_code' => $this->profile->postal_code,
                 'address' => $this->profile->address,
             ],
         ];

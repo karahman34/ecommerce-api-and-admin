@@ -22,7 +22,6 @@ class ProfileFactory extends Factory
     public function definition()
     {
         return [
-            'postal_code' => $this->faker->postcode,
             'address' => $this->faker->address,
             'telephone' => $this->faker->phoneNumber,
         ];

@@ -27,11 +27,6 @@
             </div>
 
             <div class="d-flex flex-wrap">
-              <span class="font-weight-bold mr-1">Postal Code:</span>
-              <span>{{ $buyer->profile->postal_code }}</span>
-            </div>
-
-            <div class="d-flex flex-wrap">
               <span class="font-weight-bold mr-1">Telephone:</span>
               <span>{{ $buyer->profile->telephone }}</span>
             </div>

@@ -23,10 +23,16 @@ class CartRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'product_id' => 'required|integer',
             'qty' => 'required|integer|gt:0',
             'message' => 'nullable|string|max:255'
         ];
+
+        if ($this->method() === 'PATCH') {
+            $rules['product_id'] = str_replace('required', 'nullable', $rules['product_id']);
+        }
+        
+        return $rules;
     }
 }

@@ -18,7 +18,7 @@ class CreateDetailOrdersTable extends Migration
             $table->foreignId('order_id')->constrained('orders');
             $table->foreignId('product_id')->nullable()->constrained('products')->onDelete('set null');
             $table->unsignedInteger('qty');
-            $table->string('message');
+            $table->string('message')->nullable();
             $table->timestamps();
         });
     }

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoriesCollection;
+use App\Http\Resources\CategoryProductsCollection;
 use App\Models\Category;
+use App\Models\Product;
 use App\Utils\Transformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,13 +32,20 @@ class CategoryController extends Controller
             })
             ->when(!is_null($random) && $random == '1', function ($query) {
                 $query->inRandomOrder();
+            })
+            ->when(is_null($random), function ($query) {
+                $query->addSelect([
+                    'total_products' => Product::selectRaw('COUNT(*)')
+                                                ->whereColumn('category_id', 'categories.id')
+                ])
+                ->orderByDesc('total_products');
             });
 
             $categories = is_null($limit)
                             ? $query->paginate()
                             : $query->paginate($limit);
 
-            return (new CategoriesCollection($categories))
+            return (new CategoryProductsCollection($categories))
                     ->additional(
                         Transformer::skeleton(true, 'Success to load categories data.', null, true)
                     );

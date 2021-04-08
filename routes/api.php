@@ -16,3 +16,4 @@ require "api/carts.php";
 require "api/categories.php";
 require "api/products.php";
 require "api/transactions.php";
+require "api/profile.php";

@@ -21,12 +21,20 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         try {
+            $limit = $request->input('limit');
+            $filter = $request->input('filter');
+            $category = $request->input('category');
+
             $query = Product::with(['category', 'thumbnail', 'images'])
                                 ->when($request->has('search'), function ($query) use ($request) {
-                                    $query->where('name', 'like', '%' . $request->input('q') . '%');
+                                    $query->where('products.name', 'like', '%' . $request->input('q') . '%');
+                                })
+                                ->when(!is_null($category), function ($query) use ($category) {
+                                    $query->select('products.*')
+                                            ->join('categories', 'categories.id', 'products.category_id')
+                                            ->where('categories.name', $category);
                                 });
 
-            $filter = $request->input('filter');
             if (!is_null($filter)) {
                 $allowedFilters = ['new'];
                                     
@@ -41,7 +49,9 @@ class ProductController extends Controller
                 }
             }
 
-            $products = $request->has('limit') ? $query->paginate($request->input('limit')) : $query->paginate();
+            $products = !is_null($limit)
+                            ? $query->paginate($limit)
+                            : $query->paginate();
 
             return (new ProductsCollection($products))
                     ->additional(
@@ -110,11 +120,16 @@ class ProductController extends Controller
         try {
             $limit = $request->input('limit');
             $search = $request->input('search');
+            $category = $request->input('category');
 
             $query = Product::select('products.*')
                                 ->join('detail_orders', 'detail_orders.product_id', 'products.id')
                                 ->when(!is_null($search), function ($query) use ($search) {
-                                    $query->where('name', 'like', '%'. $search .'%');
+                                    $query->where('products.name', 'like', '%'. $search .'%');
+                                })
+                                ->when(!is_null($category), function ($query) use ($category) {
+                                    $query->join('categories', 'categories.id', 'products.category_id')
+                                            ->where('categories.name', $category);
                                 })
                                 ->groupBy('product_id')
                                 ->orderByRaw('COUNT(product_id) DESC');
@@ -142,10 +157,15 @@ class ProductController extends Controller
         try {
             $limit = $request->input('limit');
             $search = $request->input('search');
+            $category = $request->input('category');
 
             $query = Product::select('products.*')
                                 ->when(!is_null($search), function ($query) use ($search) {
-                                    $query->where('name', 'like', '%'. $search .'%');
+                                    $query->where('products.name', 'like', '%'. $search .'%');
+                                })
+                                ->when(!is_null($category), function ($query) use ($category) {
+                                    $query->join('categories', 'categories.id', 'products.category_id')
+                                            ->where('categories.name', $category);
                                 })
                                 ->inRandomOrder();
 

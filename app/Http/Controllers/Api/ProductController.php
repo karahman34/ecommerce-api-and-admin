@@ -21,13 +21,14 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         try {
+            $q = $request->input('q');
             $limit = $request->input('limit');
             $filter = $request->input('filter');
             $category = $request->input('category');
 
             $query = Product::with(['category', 'thumbnail', 'images'])
-                                ->when($request->has('search'), function ($query) use ($request) {
-                                    $query->where('products.name', 'like', '%' . $request->input('q') . '%');
+                                ->when(!is_null($q), function ($query) use ($q) {
+                                    $query->where('products.name', 'like', '%' . $q . '%');
                                 })
                                 ->when(!is_null($category), function ($query) use ($category) {
                                     $query->select('products.*')
@@ -118,14 +119,14 @@ class ProductController extends Controller
     public function popular(Request $request)
     {
         try {
+            $q = $request->input('q');
             $limit = $request->input('limit');
-            $search = $request->input('search');
             $category = $request->input('category');
 
             $query = Product::select('products.*')
                                 ->join('detail_orders', 'detail_orders.product_id', 'products.id')
-                                ->when(!is_null($search), function ($query) use ($search) {
-                                    $query->where('products.name', 'like', '%'. $search .'%');
+                                ->when(!is_null($q), function ($query) use ($q) {
+                                    $query->where('products.name', 'like', '%'. $q .'%');
                                 })
                                 ->when(!is_null($category), function ($query) use ($category) {
                                     $query->join('categories', 'categories.id', 'products.category_id')
@@ -155,13 +156,13 @@ class ProductController extends Controller
     public function random(Request $request)
     {
         try {
+            $q = $request->input('q');
             $limit = $request->input('limit');
-            $search = $request->input('search');
             $category = $request->input('category');
 
             $query = Product::select('products.*')
-                                ->when(!is_null($search), function ($query) use ($search) {
-                                    $query->where('products.name', 'like', '%'. $search .'%');
+                                ->when(!is_null($q), function ($query) use ($q) {
+                                    $query->where('products.name', 'like', '%'. $q .'%');
                                 })
                                 ->when(!is_null($category), function ($query) use ($category) {
                                     $query->join('categories', 'categories.id', 'products.category_id')

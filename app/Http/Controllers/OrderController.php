@@ -87,12 +87,12 @@ class OrderController extends Controller
     {
         try {
             $order->update([
-                'status' => 'finish'
+                'status' => 'delivered'
             ]);
 
-            return Transformer::success('Success to finish order.');
+            return Transformer::success('Success to update order status.');
         } catch (\Throwable $th) {
-            return Transformer::failed('Failed to finish order.');
+            return Transformer::failed('Failed to update order status.');
         }
     }
 

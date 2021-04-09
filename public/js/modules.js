@@ -25,7 +25,7 @@ $(document).on('click', '.btn-order-finish', function () {
 
     $alertStatus.removeClass('alert-warning')
     $alertStatus.addClass('alert-success')
-    $alertStatus.html('finish')
+    $alertStatus.html('delivered')
 
     Swal.fire({
       icon: 'success',

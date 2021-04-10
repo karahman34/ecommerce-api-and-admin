@@ -56,7 +56,7 @@ class TransactionController extends Controller
      *
      * @return  bool
      */
-    public function profileComplete(User $user)
+    private function profileComplete(User $user)
     {
         $profile = $user->profile;
 

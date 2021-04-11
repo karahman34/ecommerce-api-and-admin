@@ -3,15 +3,80 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TransactionDetailsResource;
+use App\Http\Resources\TransactionHistoriesCollection;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Utils\Transformer;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
+    /**
+     * Get user transaction histories.
+     *
+     * @param   Request  $request
+     *
+     * @return  \Illuminate\Http\JsonResponse
+     */
+    public function index(Request $request)
+    {
+        $request->validate([
+            'order' => 'nullable|string|in:asc,desc',
+            'limit' => 'nullable|string|numeric|gt:0'
+        ]);
+        
+        try {
+            $order = $request->input('order', 'asc');
+            $limit = $request->input('limit');
+
+            $query = Transaction::select('transactions.*', 'status')
+                                    ->join('orders', 'orders.id', 'transactions.order_id')
+                                    ->where('orders.user_id', Auth::id())
+                                    ->orderBy('transactions.created_at', $order);
+                                    
+            $transactions = is_null($limit)
+                                ? $query->paginate()
+                                : $query->paginate($limit);
+
+            return (new TransactionHistoriesCollection($transactions))
+                        ->additional(
+                            Transformer::skeleton(true, 'Success to load transaction histories.', null, true)
+                        );
+        } catch (\Throwable $th) {
+            return Transformer::failed('Failed to load transaction histories.');
+        }
+    }
+
+    /**
+     * Load transaction details.
+     *
+     * @param   Transaction  $transaction
+     *
+     * @return  \Illuminate\Http\JsonResponse
+     */
+    public function show(Transaction $transaction)
+    {
+        try {
+            $transaction->load(['order', 'order.detail_orders']);
+
+            if ($transaction->order->user_id !== Auth::id()) {
+                return Transformer::failed('You\'re not permitted to see this action.', null, 403);
+            }
+
+            return (new TransactionDetailsResource($transaction))
+                    ->additional(
+                        Transformer::skeleton(true, 'Success to load transaction details.', null, true)
+                    );
+        } catch (\Throwable $th) {
+            return Transformer::failed('Failed to load transaction details.');
+        }
+    }
+    
     /**
      * Make user transaction.
      *

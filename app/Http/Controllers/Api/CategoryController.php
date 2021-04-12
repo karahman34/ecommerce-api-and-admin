@@ -27,19 +27,17 @@ class CategoryController extends Controller
             $search = $request->input('search');
             $random = $request->input('random');
 
-            $query = Category::when(!is_null($search), function ($query) use ($search) {
-                $query->where('name', 'like', '%'. $search .'%');
-            })
-            ->when(!is_null($random) && $random == '1', function ($query) {
-                $query->inRandomOrder();
-            })
-            ->when(is_null($random), function ($query) {
-                $query->addSelect([
-                    'total_products' => Product::selectRaw('COUNT(*)')
-                                                ->whereColumn('category_id', 'categories.id')
-                ])
-                ->orderByDesc('total_products');
-            });
+            $query = Category::addSelect([
+                                    'total_products' => Product::selectRaw('COUNT(*)')
+                                                                ->whereColumn('category_id', 'categories.id')
+                                ])
+                                ->when(!is_null($search), function ($query) use ($search) {
+                                    $query->where('name', 'like', '%'. $search .'%');
+                                })
+                                ->when(!is_null($random) && $random == '1', function ($query) {
+                                    $query->inRandomOrder();
+                                })
+                                ->orderByDesc('total_products');
 
             $categories = is_null($limit)
                             ? $query->paginate()

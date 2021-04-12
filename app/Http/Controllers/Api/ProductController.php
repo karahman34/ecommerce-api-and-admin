@@ -132,7 +132,7 @@ class ProductController extends Controller
                                     $query->join('categories', 'categories.id', 'products.category_id')
                                             ->where('categories.name', $category);
                                 })
-                                ->groupBy('product_id')
+                                ->groupBy('products.id')
                                 ->orderByRaw('COUNT(product_id) DESC');
 
             $products = is_null($limit) ? $query->paginate() : $query->paginate($limit);

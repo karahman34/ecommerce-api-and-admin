@@ -78,7 +78,7 @@ class CategoryController extends Controller
                                     ->when(!is_null($search), function ($query) use ($search) {
                                         $query->where('categories.name', 'like', '%'. $search .'%');
                                     })
-                                    ->groupBy('products_category.category_id')
+                                    ->groupBy('categories.id')
                                     ->orderByRaw('COUNT(products_category.category_id) DESC');
 
             $categories = is_null($limit)

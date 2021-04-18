@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\ProductsCollection;
 use App\Models\Product;
+use App\Services\ProductService;
 use App\Utils\Transformer;
 use Illuminate\Http\Request;
 
@@ -21,38 +22,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         try {
-            $q = $request->input('q');
-            $limit = $request->input('limit');
-            $filter = $request->input('filter');
-            $category = $request->input('category');
-
-            $query = Product::with(['category', 'thumbnail', 'images'])
-                                ->when(!is_null($q), function ($query) use ($q) {
-                                    $query->where('products.name', 'like', '%' . $q . '%');
-                                })
-                                ->when(!is_null($category), function ($query) use ($category) {
-                                    $query->select('products.*')
-                                            ->join('categories', 'categories.id', 'products.category_id')
-                                            ->where('categories.name', $category);
-                                });
-
-            if (!is_null($filter)) {
-                $allowedFilters = ['new'];
-                                    
-                if (!in_array($filter, $allowedFilters)) {
-                    return Transformer::failed('Filter not allowed.', null, 400);
-                }
-
-                switch ($filter) {
-                    case 'new':
-                        $query->orderByDesc('products.created_at');
-                        break;
-                }
-            }
-
-            $products = !is_null($limit)
-                            ? $query->paginate($limit)
-                            : $query->paginate();
+            $products = ProductService::index($request);
 
             return (new ProductsCollection($products))
                     ->additional(
@@ -106,78 +76,6 @@ class ProductController extends Controller
                     );
         } catch (\Throwable $th) {
             return Transformer::failed('Failed to load related product data.');
-        }
-    }
-    
-    /**
-     * Get popular products list.
-     *
-     * @param   Request  $request
-     *
-     * @return  \Illuminate\Http\JsonResponse
-     */
-    public function popular(Request $request)
-    {
-        try {
-            $q = $request->input('q');
-            $limit = $request->input('limit');
-            $category = $request->input('category');
-
-            $query = Product::select('products.*')
-                                ->join('detail_orders', 'detail_orders.product_id', 'products.id')
-                                ->when(!is_null($q), function ($query) use ($q) {
-                                    $query->where('products.name', 'like', '%'. $q .'%');
-                                })
-                                ->when(!is_null($category), function ($query) use ($category) {
-                                    $query->join('categories', 'categories.id', 'products.category_id')
-                                            ->where('categories.name', $category);
-                                })
-                                ->groupBy('products.id')
-                                ->orderByRaw('COUNT(product_id) DESC');
-
-            $products = is_null($limit) ? $query->paginate() : $query->paginate($limit);
-
-            return (new ProductsCollection($products))
-                        ->additional(
-                            Transformer::skeleton(true, 'Success to load popular products.', null, true)
-                        );
-        } catch (\Throwable $th) {
-            return Transformer::failed('Failed to load popular products.');
-        }
-    }
-
-    /**
-     * Get random products list.
-     *
-     * @param   Request  $request
-     *
-     * @return  \Illuminate\Http\JsonResponse
-     */
-    public function random(Request $request)
-    {
-        try {
-            $q = $request->input('q');
-            $limit = $request->input('limit');
-            $category = $request->input('category');
-
-            $query = Product::select('products.*')
-                                ->when(!is_null($q), function ($query) use ($q) {
-                                    $query->where('products.name', 'like', '%'. $q .'%');
-                                })
-                                ->when(!is_null($category), function ($query) use ($category) {
-                                    $query->join('categories', 'categories.id', 'products.category_id')
-                                            ->where('categories.name', $category);
-                                })
-                                ->inRandomOrder();
-
-            $products = is_null($limit) ? $query->paginate() : $query->paginate($limit);
-
-            return (new ProductsCollection($products))
-                        ->additional(
-                            Transformer::skeleton(true, 'Success to load random products.', null, true)
-                        );
-        } catch (\Throwable $th) {
-            return Transformer::failed('Failed to load random products.');
         }
     }
 }
